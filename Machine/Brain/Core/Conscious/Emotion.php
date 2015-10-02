@@ -2,11 +2,7 @@
 
 interface Emotion {
 
-    
-    public function category();
+    public function mood();
 
-    public function weighting();
-
-    public function linkArray();
 }
 

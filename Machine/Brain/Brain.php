@@ -2,6 +2,7 @@
 
 class Brain {
 
+    public static $singleDB;
     private static $dbhost = 'localhost';
     private static $dbuser = 'root';
     private static $dbpass = '';
@@ -21,14 +22,31 @@ class Brain {
 
     public static function getInstance() {
         if (!self::$singleDB) {
-            self::$singleDB = new Database();
+            self::$singleDB = new Brain();
         }
         return self::$singleDB;
     }
 
     public function think($query) {
 
-        $this->mysqli->query($query);
+        return $this->mysqli->query($query);
+    }
+
+    public function checkExists($whereArray) {
+
+        $whereStatement = "";
+        foreach ($whereArray AS $field => $value) {
+
+            $whereStatement.=$field . " = '$value'";
+        }
+
+        if ($this->selectWhere("id", $whereStatement)) {
+         
+            return true;
+        } else {
+            
+            return false;
+        }
     }
 
     public function learn($insertArray) {
@@ -59,7 +77,7 @@ class Brain {
             $query.= "'" . $value . "'" . $comma;
         }
         $query.=")";
-        echo $query;
+        //echo $query;
         $this->mysqli->query($query);
     }
 
@@ -70,26 +88,43 @@ class Brain {
 
     public function selectWhere($target, $whereStatement, $orderBYStatement = null) {
         $query = "SELECT $target FROM $this->area WHERE $whereStatement $orderBYStatement";
-        $result = $this->query($query);
-        $row = $result->fetch_assoc();
-        return $row[$target];
+        //echo "<br/>".$query."<br/>";
+        $result = $this->think($query);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+              return $row[$target];
+        } else {
+            return null;
+        }
     }
 
     public function selectSingle($target, $field, $value, $orderBYStatement = null) {
         $query = "SELECT $target FROM $this->area WHERE $field = '$value' $orderBYStatement";
-        $result = $this->query($query);
+        //echo $query;
+      
+        $result = $this->think($query);
         $row = $result->fetch_assoc();
         return $row[$target];
     }
 
     public function selectArray($target, $query) {
         $array = array();
-        $result = $this->query($query);
+        $result = $this->think($query);
         while ($row = $result->fetch_assoc()) {
             $array[] = $row[$target];
         }
 
         return $array;
+    }
+    
+    public function update($query){
+        
+        $this->think($query);
+    }
+    
+    public function lastInsertID(){
+        
+        return $this->mysqli->insert_id;
     }
 
 }

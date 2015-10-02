@@ -1,5 +1,23 @@
 <?php
 
+//LOAD INTERFACES FIRST
+
+//Core  (INTERFACES)
+// - Conscious
+require_once("Machine/Brain/Core/Conscious/Conscious.php");
+require_once("Machine/Brain/Core/Conscious/Emotion.php");
+require_once("Machine/Brain/Core/Conscious/Logic.php");
+require_once("Machine/Brain/Core/Conscious/Memory.php");
+// - Subconscious
+require_once("Machine/Brain/Core/Subconscious/AutonomicNervousSystem/Parasympathetic/Parasympathetic.php");
+require_once("Machine/Brain/Core/Subconscious/AutonomicNervousSystem/Sympathetic/Sympathetic.php");
+
+//Senses (INTERFACES)
+require_once("Machine/Brain/Senses/Sight.php");
+require_once("Machine/Brain/Senses/Smell.php");
+require_once("Machine/Brain/Senses/Sound.php");
+require_once("Machine/Brain/Senses/Taste.php");
+require_once("Machine/Brain/Senses/Touch.php");
 
 
 
@@ -37,6 +55,8 @@ require_once("Machine/Brain/BrainAreas/TemporalLobe/TemporalLobe.php");
 
 //Cognitive Abilities  (CLASSES)
 require_once("Machine/Brain/Cognitive/Feeling/Feeling.php");
+require_once("Machine/Brain/Cognitive/Feeling/Mood/Mood.php");
+require_once("Machine/Brain/Cognitive/Feeling/Mood/MoodType.php");
 require_once("Machine/Brain/Cognitive/Language/Language.php");
 require_once("Machine/Brain/Cognitive/Learning/Learning.php");
 require_once("Machine/Brain/Cognitive/Planning/Planning.php");
@@ -45,22 +65,7 @@ require_once("Machine/Brain/Cognitive/Resourcing/Resourcing.php");
 require_once("Machine/Brain/Cognitive/Sensing/Sensing.php");
 require_once("Machine/Brain/Cognitive/Visualising/Visualising.php");
 
-//Core  (INTERFACES)
-// - Conscious
-require_once("Machine/Brain/Core/Conscious/Conscious.php");
-require_once("Machine/Brain/Core/Conscious/Emotion.php");
-require_once("Machine/Brain/Core/Conscious/Logic.php");
-require_once("Machine/Brain/Core/Conscious/Memory.php");
-// - Subconscious
-require_once("Machine/Brain/Core/Subconscious/AutonomicNervousSystem/Parasympathetic/Parasympathetic.php");
-require_once("Machine/Brain/Core/Subconscious/AutonomicNervousSystem/Sympathetic/Sympathetic.php");
 
-//Senses (INTERFACES)
-require_once("Machine/Brain/Senses/Sight.php");
-require_once("Machine/Brain/Senses/Smell.php");
-require_once("Machine/Brain/Senses/Sound.php");
-require_once("Machine/Brain/Senses/Taste.php");
-require_once("Machine/Brain/Senses/Touch.php");
 
 
 
