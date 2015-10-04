@@ -5,20 +5,30 @@ class Feeling implements Emotion {
     public static $area = "feelings";
 
     public function __construct($feelingID) {
-        $this->id = $feelingID;
+        $this->feelingID = $feelingID;
         $this->brain = Brain::getInstance();
-        $this->brain->setArea("feelings");
+        $this->moods();
+    }
+
+    public function moods() {
+
+        return $this->moods = Mood::averageMoodTypePerFeelingArray($this->feelingID);
     }
 
     public function get($field) {
 
-        return $this->brain->selectSingle($field, "id", $this->id);
+        return $this->brain->selectSingle($field, self::$area, "id", $this->feelingID);
+    }
+
+    public function name() {
+
+        return $this->get("name");
     }
 
     public function addCount() {
 
         $newCount = $this->displayCount() + 1;
-        $this->brain->update("UPDATE " . self::$area . " SET count = $newCount WHERE id = $this->id");
+        $this->brain->update("UPDATE " . self::$area . " SET count = $newCount WHERE id = $this->feelingID");
     }
 
     public function displayCount() {
@@ -44,41 +54,67 @@ class Feeling implements Emotion {
 
     public static function IDFromName($name) {
         $brain = Brain::getInstance();
-        $brain->setArea("feelings");
-        return $brain->selectSingle("id", "name", $name);
+
+        return $brain->selectSingle("id", self::$area, "name", $name);
     }
 
     public static function parseNewFeeling() {
 
         $newFeeling = $_POST["feeling"];
         $brain = Brain::getInstance();
-        $brain->setArea("feelings");
+
         $array = array("name" => $newFeeling);
-        if (!$brain->checkExists($array)) {
-            $brain->learn(array("name" => $newFeeling));
+        if (!$brain->checkExists(self::$area, $array)) {
+            $brain->learn(self::$area, array("name" => $newFeeling));
             $feelingID = $brain->lastInsertID();
             echo"<p> The feeling ' $newFeeling '  is new to me...please tell me more.....";
             echo"<p>" . MoodType::moodTypeForm($feelingID);
         } else {
             $feeling = new Feeling(self::IDFromName($newFeeling));
             $feeling->addCount();
-            echo"<p> Funny you should say that; " . $feeling->displayCount() . " people felt '" . $feeling->displayFeeling() . "' the same talking to me";
-            echo"<p> When they felt " . $feeling->displayFeeling() . ", on average they felt like this....";
+            echo"<p> Funny you should say that; " . $feeling->displayCount() . " people felt '" .
+            $feeling->displayFeeling() . "' the same talking to me...please tell me a bit more...";
+            echo"<p>" . MoodType::moodTypeForm($feeling->feelingID);
         }
     }
 
-    public static function parseNewMoods() {
+    public static function parseNewMoodsArray() {
         $brain = Brain::getInstance();
-        $brain->setArea("moods");
         $feelingID = $_POST["feelingID"];
+        
+       
         foreach ($_POST AS $key => $value) {
 
-            if (is_numeric($key)) {
-                $brain->learn(array("feeling_id" => $feelingID, "mood_type_id" => $key, "scale" => $value));
+            if (is_numeric($key) && $value <= 10 && $value >= 1) {
+                $brain->learn("moods", array("feeling_id" => $feelingID, "mood_type_id" => $key, "scale" => $value));
             }
         }
+        echo"<p>Thanks, I have learnt more about feelings</p>";
+        echo"<p>Now tell me about how you are feeling</p>";
+        echo self::ask() . "</p>";
         
-        echo"<p>Thanks, I have learnt something about feelings";
+    }
+    
+    
+       public static function parseNewMoods() {
+        $brain = Brain::getInstance();
+        $feelingID = $_POST["feelingID"];
+        
+       
+        foreach ($_POST AS $key => $value) {
+
+            if (is_numeric($key) && $value <= 10 && $value >= 1) {
+                $brain->learn("moods", array("feeling_id" => $feelingID, "mood_type_id" => $key, "scale" => $value));
+            }
+        }
+        echo"<p>Thanks, I have learnt more about feelings</p>";
+     
+        
+    }
+
+    public static function mostCommonFeelingID() {
+        $brain = Brain::getInstance();
+        return $brain->selectWhere("id", self::$area, "id > 0", " ORDER BY count DESC LIMIT 0,1");
     }
 
     public function mood() {

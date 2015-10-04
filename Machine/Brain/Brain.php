@@ -16,9 +16,7 @@ class Brain {
         }
     }
 
-    public function setArea($table) {
-        $this->area = $table;
-    }
+    
 
     public static function getInstance() {
         if (!self::$singleDB) {
@@ -32,7 +30,7 @@ class Brain {
         return $this->mysqli->query($query);
     }
 
-    public function checkExists($whereArray) {
+    public function checkExists($table,$whereArray) {
 
         $whereStatement = "";
         foreach ($whereArray AS $field => $value) {
@@ -40,7 +38,7 @@ class Brain {
             $whereStatement.=$field . " = '$value'";
         }
 
-        if ($this->selectWhere("id", $whereStatement)) {
+        if ($this->selectWhere("id",$table, $whereStatement)) {
          
             return true;
         } else {
@@ -49,9 +47,9 @@ class Brain {
         }
     }
 
-    public function learn($insertArray) {
+    public function learn($table,$insertArray) {
 
-        $query = "INSERT INTO $this->area (";
+        $query = "INSERT INTO $table (";
         $count = count($insertArray);
         $c = 0;
         $valueArray = array();
@@ -86,8 +84,8 @@ class Brain {
         $this->mysqli->query($query);
     }
 
-    public function selectWhere($target, $whereStatement, $orderBYStatement = null) {
-        $query = "SELECT $target FROM $this->area WHERE $whereStatement $orderBYStatement";
+    public function selectWhere($target, $table, $whereStatement, $orderBYStatement = null) {
+        $query = "SELECT $target FROM $table WHERE $whereStatement $orderBYStatement";
         //echo "<br/>".$query."<br/>";
         $result = $this->think($query);
         if ($result->num_rows > 0) {
@@ -98,8 +96,8 @@ class Brain {
         }
     }
 
-    public function selectSingle($target, $field, $value, $orderBYStatement = null) {
-        $query = "SELECT $target FROM $this->area WHERE $field = '$value' $orderBYStatement";
+    public function selectSingle($target, $table, $field, $value, $orderBYStatement = null) {
+        $query = "SELECT $target FROM $table WHERE $field = '$value' $orderBYStatement";
         //echo $query;
       
         $result = $this->think($query);
