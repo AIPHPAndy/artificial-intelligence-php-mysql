@@ -19,9 +19,14 @@ require_once("Machine/Brain/Senses/Sound.php");
 require_once("Machine/Brain/Senses/Taste.php");
 require_once("Machine/Brain/Senses/Touch.php");
 
+//Neurotransmitters
+require_once("Machine/Brain/Neurotransmitters/Serotonin/Serotonin.php");
+require_once("Machine/Brain/Neurotransmitters/GABA/Gaba.php");
+require_once("Machine/Brain/Neurotransmitters/Glutamine/Glutamine.php");
+require_once("Machine/Brain/Neurotransmitters/Noradrenaline/Noradrenaline.php");
+require_once("Machine/Brain/Neurotransmitters/Dopamine/Dopamine.php");
 
-
-///LOAD ALL CLASSES AND INTERFACES - please keep in alphabetical order
+///LOAD ALL CLASSES 
 
 
 //BRAIN
@@ -65,8 +70,8 @@ require_once("Machine/Brain/Cognitive/Resourcing/Resourcing.php");
 require_once("Machine/Brain/Cognitive/Sensing/Sensing.php");
 require_once("Machine/Brain/Cognitive/Visualising/Visualising.php");
 
-
-
+//NEUROTRANSMITTER (CLASS)
+require_once("Machine/Brain/Neurotransmitters/Neurotransmitters.php");
 
 
 //BODY
