@@ -38,6 +38,7 @@ class Machine {
             echo "<p>On average, humans who are feeling " . $feeling->name() . " have the mood characteristics below:</p>";
             echo "<p>";
             echo MoodType::moodTypeArrayForm($this->feelingID, $feeling->moods);
+            echo $feeling->overallMoodValue();
         }
     }
 

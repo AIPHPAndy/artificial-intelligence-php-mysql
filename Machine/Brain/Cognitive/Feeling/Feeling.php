@@ -14,6 +14,12 @@ class Feeling implements Emotion {
 
         return $this->moods = Mood::averageMoodTypePerFeelingArray($this->feelingID);
     }
+    
+    public function overallMoodValue(){
+     
+        print_r($this->moods);
+        
+    }
 
     public function get($field) {
 
